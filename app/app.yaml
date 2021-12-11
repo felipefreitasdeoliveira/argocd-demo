@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blue-deploy
+  labels:
+    app: blue-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blue-deploy
+  template:
+    metadata:
+      labels:
+        app: blue-deploy
+    spec:
+      containers:
+        - name: nginx-blue
+          image: fabricioveronez/bluehome
+          ports:
+           - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blue-service
+spec:
+  selector:
+    app: blue-deploy
+  ports:
+    - port: 80
+      targetPort: 8080
